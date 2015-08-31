@@ -9,6 +9,11 @@ import scala.collection.JavaConversions.propertiesAsScalaMap
 object Ex07 {
   def main(args: Array[String]): Unit = {
     val props: scala.collection.Map[String, String] = System.getProperties()
-    
+    val maxLengthKey = props.keySet.toList.maxBy(_ size)
+    println(maxLengthKey)
+
+    for ((k, v) <- props) {
+      println(k + " " * ((maxLengthKey size) - (k size)) + " | " + v)
+    }
   }
 }
