@@ -11,5 +11,19 @@ package com.scalaimpatient.ch5.exercise
  * @author BobbyTang
  */
 object Ex08 {
-  
+  class Car(val manufacturer: String, val modelName: String, val modelYear: Int = -1, var licensePlate: String = "") {
+    override def toString() = {
+      "Manufacturer: " + manufacturer + " Model: " + modelName + " Year: " + modelYear + " Plate: " + licensePlate
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(new Car("Ford", "Taurus"))
+    println(new Car("Toyota", "Tundra", 2006))
+    println(new Car("Fiat", "European", licensePlate = "ABC-123"))
+    val c = new Car("Mystery", "Machine", 1969, "ZOINKS")
+    println(c)
+    c.licensePlate = "ZOINKS!"
+    println(c)
+  }
 }
