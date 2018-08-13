@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.functions._
 import org.scalatest.FlatSpec
 
 
@@ -20,6 +21,7 @@ class CustomWindowFunctionTest extends FlatSpec {
     .getOrCreate()
   val sqlc = spark.sqlContext
   val sc = spark.sparkContext
+
   import sqlc.implicits._
 
   val tradeArray = Array[Trade](
@@ -30,14 +32,21 @@ class CustomWindowFunctionTest extends FlatSpec {
     Trade("5", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:45")), new java.math.BigDecimal(24L), new java.math.BigDecimal(100L))
   )
 
-  "a CustomWindowFunction" should "correctly create a session " in {
+  val tsToLong = (s: java.sql.Timestamp) => s.getTime()
+  val tsToLongUDF = udf(tsToLong)
 
+  "sum" should "calculate the total qty within the window " in {
     val df = sqlc.createDataFrame(sc.parallelize(tradeArray))
 
-    val window = Window.partitionBy($"symbol").orderBy($"transTime".asc).rangeBetween(1L, 20L)
-    val res = df.withColumn( "newsession", MyUDWF.calculateSession($"id", $"transTime", $"price", $"qty").over(window))
+    val myWindowAggFunc = new MyWindowAggFunc()
 
-    df.take(1).foreach(println(_))
+    val window = Window.partitionBy($"symbol").orderBy(tsToLongUDF($"transTime").asc).rangeBetween(0L, 3000L)
+    val res = df.withColumn("window_total_qty", sum($"qty").over(window))
+      .withColumn("my_window", myWindowAggFunc($"transId", $"qty", $"price", $"transTime").over(window))
+
+    res.collect().foreach(println(_))
   }
+
+
 
 }
