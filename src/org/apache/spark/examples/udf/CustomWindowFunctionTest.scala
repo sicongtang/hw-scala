@@ -29,7 +29,10 @@ class CustomWindowFunctionTest extends FlatSpec {
     Trade("2", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:32")), new java.math.BigDecimal(21L), new java.math.BigDecimal(100L)),
     Trade("3", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:34")), new java.math.BigDecimal(22L), new java.math.BigDecimal(100L)),
     Trade("4", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:35")), new java.math.BigDecimal(23L), new java.math.BigDecimal(100L)),
-    Trade("5", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:45")), new java.math.BigDecimal(24L), new java.math.BigDecimal(100L))
+    Trade("5", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:45")), new java.math.BigDecimal(24L), new java.math.BigDecimal(100L)),
+    Trade("6", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:46")), new java.math.BigDecimal(24.5D), new java.math.BigDecimal(100L)),
+    Trade("7", "IBM", Timestamp.valueOf(LocalDateTime.parse("2007-12-03T10:15:47")), new java.math.BigDecimal(24.1D), new java.math.BigDecimal(100L))
+
   )
 
   val tsToLong = (s: java.sql.Timestamp) => s.getTime()
